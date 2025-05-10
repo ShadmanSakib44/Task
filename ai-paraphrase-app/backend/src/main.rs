@@ -26,7 +26,6 @@ struct Message {
 async fn paraphrase(body: web::Json<Input>, api_key: web::Data<String>) -> impl Responder {
     let client = Client::new();
 
-    // Strict instruction to output ONLY the paraphrased sentence
     let prompt = format!(
         "Paraphrase the following text into one clear, high-quality sentence. Do not provide multiple options, explanations, or commentary. Output ONLY the paraphrased sentence:\n\n{}",
         body.text
@@ -43,7 +42,7 @@ async fn paraphrase(body: web::Json<Input>, api_key: web::Data<String>) -> impl 
     let res = client
         .post("https://openrouter.ai/api/v1/chat/completions")
         .header("Authorization", format!("Bearer {}", api_key.get_ref()))
-        .header("HTTP-Referer", "http://localhost:5173")
+        .header("HTTP-Referer", "https://task-hye8.vercel.app") // updated referer
         .json(&request_body)
         .send()
         .await;
@@ -55,14 +54,12 @@ async fn paraphrase(body: web::Json<Input>, api_key: web::Data<String>) -> impl 
                     .as_str()
                     .unwrap_or("Sorry, no paraphrased result.");
 
-                // Strip anything after the first full sentence or explanation
                 let first_sentence = raw_output
                     .split_terminator(['.', '\n', '!', '?'])
                     .next()
                     .unwrap_or(raw_output)
                     .trim();
 
-                // Add back the period if missing
                 let clean_output = if first_sentence.ends_with(['.', '!', '?']) {
                     first_sentence.to_string()
                 } else {
@@ -90,6 +87,7 @@ async fn main(
     let factory = move |cfg: &mut web::ServiceConfig| {
         let cors = Cors::default()
             .allowed_origin("http://localhost:5173")
+            .allowed_origin("https://task-hye8.vercel.app")
             .allowed_methods(vec!["POST"])
             .allowed_headers(vec![header::CONTENT_TYPE, header::ACCEPT])
             .supports_credentials()
