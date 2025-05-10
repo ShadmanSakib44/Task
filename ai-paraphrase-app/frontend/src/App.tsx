@@ -1,19 +1,18 @@
 import { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import './App.css'
 
 function App() {
-  const [text, setText] = useState('Paste or type your text here...')
+  const [text, setText] = useState('')
   const [selection, setSelection] = useState<[number, number] | null>(null)
+
+  const isMobile = useMediaQuery({ maxWidth: 767 })
 
   const handleTextSelect = () => {
     const textarea = document.getElementById('text-editor') as HTMLTextAreaElement
     const start = textarea.selectionStart
     const end = textarea.selectionEnd
-    if (start !== end) {
-      setSelection([start, end])
-    } else {
-      setSelection(null)
-    }
+    setSelection(start !== end ? [start, end] : null)
   }
 
   const handleParaphrase = async () => {
@@ -48,6 +47,7 @@ function App() {
     <div className="container">
       <h1>📝 AI Text Paraphraser</h1>
       <p className="subheading">Select any part of your text and click "Paraphrase"</p>
+
       <textarea
         id="text-editor"
         className="editor"
@@ -55,9 +55,15 @@ function App() {
         onChange={(e) => setText(e.target.value)}
         onMouseUp={handleTextSelect}
         onKeyUp={handleTextSelect}
+        placeholder="Start typing or paste your text here..."
       />
-      <button onClick={handleParaphrase} disabled={!selection} className="paraphrase-btn">
-        Paraphrase Selected Text
+
+      <button
+        onClick={handleParaphrase}
+        disabled={!selection}
+        className="paraphrase-btn"
+      >
+        {isMobile ? 'Paraphrase' : 'Paraphrase Selected Text'}
       </button>
     </div>
   )

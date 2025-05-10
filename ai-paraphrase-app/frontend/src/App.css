@@ -1,10 +1,87 @@
+/* Root container */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  box-sizing: border-box;
 }
 
+/* Global styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Container styles */
+.container {
+  max-width: 1000px; /* Increased max-width for wider container */
+  margin: 4rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.subheading {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Textarea editor */
+.editor {
+  width: 100%;
+  min-height: 600px; /* Increased min-height for larger paragraphs */
+  padding: 1.5rem; /* Increased padding for better text spacing */
+  font-size: 1.2rem; /* Slightly larger font for readability */
+  line-height: 1.8; /* Increased line-height for better readability */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Button styles */
+.paraphrase-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: auto;
+}
+
+.paraphrase-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.paraphrase-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Logo styles (if used) */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -33,6 +110,7 @@
   }
 }
 
+/* Card component (if used) */
 .card {
   padding: 2em;
 }
@@ -41,65 +119,53 @@
   color: #888;
 }
 
+/* Responsive Media Queries */
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 90%; /* Responsive width for tablets */
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
+  h1 {
+    font-size: 2rem;
+  }
+
+  .editor {
+    font-size: 1.1rem; /* Adjusted for tablet readability */
+    min-height: 400px; /* Adjusted min-height for tablet */
+    padding: 1rem; /* Adjusted padding for tablet */
+  }
+
+  .paraphrase-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
 }
 
-.container {
-  max-width: 800px;
-  margin: 4rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
+@media screen and (max-width: 480px) {
+  .container {
+    max-width: 95%; /* Responsive width for mobile */
+    margin: 1.5rem 0.5rem;
+    padding: 1rem;
+  }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
+  h1 {
+    font-size: 1.75rem;
+  }
 
-.subheading {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
+  .subheading {
+    font-size: 1rem;
+  }
 
-.editor {
-  width: 60vh;
-  min-height: 400px;
-  padding: 1rem;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: vertical;
-  outline: none;
-  box-sizing: border-box;
-}
+  .editor {
+    font-size: 1rem; /* Further adjusted for smaller screens */
+    min-height: 300px; /* Further adjusted min-height */
+    padding: 0.75rem;
+  }
 
-
-.paraphrase-btn {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.paraphrase-btn:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.paraphrase-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+  .paraphrase-btn {
+    font-size: 0.95rem;
+    padding: 0.65rem 1.2rem;
+  }
 }
