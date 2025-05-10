@@ -1,5 +1,5 @@
 use actix_cors::Cors;
-use actix_web::{post, web, HttpResponse, Responder, http::header};
+use actix_web::{post, web, App, HttpResponse, HttpServer, Responder, http::header};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use shuttle_actix_web::ShuttleActixWeb;
@@ -42,7 +42,7 @@ async fn paraphrase(body: web::Json<Input>, api_key: web::Data<String>) -> impl 
     let res = client
         .post("https://openrouter.ai/api/v1/chat/completions")
         .header("Authorization", format!("Bearer {}", api_key.get_ref()))
-        .header("HTTP-Referer", "https://task-hye8.vercel.app") // updated referer
+        .header("HTTP-Referer", "https://task-hye8.vercel.app")
         .json(&request_body)
         .send()
         .await;
@@ -86,19 +86,19 @@ async fn main(
 
     let factory = move |cfg: &mut web::ServiceConfig| {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:5173")
-            .allowed_origin("https://task-hye8.vercel.app")
-            .allowed_methods(vec!["POST"])
-            .allowed_headers(vec![header::CONTENT_TYPE, header::ACCEPT])
-            .supports_credentials()
+            .allowed_origin("https://task-hye8.vercel.app") // Only allow Vercel
+            .allowed_methods(vec!["GET", "POST", "OPTIONS"])
+            .allowed_headers(vec![
+                header::CONTENT_TYPE,
+                header::ACCEPT,
+                header::ORIGIN,
+                header::AUTHORIZATION,
+            ])
             .max_age(3600);
 
-        cfg.service(
-            web::scope("")
-                .app_data(api_key_data.clone())
-                .wrap(cors)
-                .service(paraphrase)
-        );
+        cfg.app_data(api_key_data.clone())
+            .wrap(cors)
+            .service(paraphrase);
     };
 
     Ok(factory.into())

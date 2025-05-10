@@ -65,6 +65,11 @@ function App() {
       >
         {isMobile ? 'Paraphrase' : 'Paraphrase Selected Text'}
       </button>
+
+      {/* Footer */}
+      <footer className="footer">
+        Built by <a href="https://sakibshadman.com" target="_blank" rel="noopener noreferrer">sakibshadman.com</a>
+      </footer>
     </div>
   )
 }
