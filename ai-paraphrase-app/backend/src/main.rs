@@ -1,5 +1,5 @@
 use actix_cors::Cors;
-use actix_web::{post, web, App, HttpResponse, HttpServer, Responder, http::header};
+use actix_web::{ http::header, post, web, HttpResponse, Responder };
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use shuttle_actix_web::ShuttleActixWeb;
@@ -86,7 +86,7 @@ async fn main(
 
     let factory = move |cfg: &mut web::ServiceConfig| {
         let cors = Cors::default()
-            .allowed_origin("https://task-hye8.vercel.app") // Only allow Vercel
+            .allowed_origin("https://task-hye8.vercel.app")
             .allowed_methods(vec!["GET", "POST", "OPTIONS"])
             .allowed_headers(vec![
                 header::CONTENT_TYPE,
@@ -97,8 +97,7 @@ async fn main(
             .max_age(3600);
 
         cfg.app_data(api_key_data.clone())
-            .wrap(cors)
-            .service(paraphrase);
+           .service(web::scope("").wrap(cors).service(paraphrase));
     };
 
     Ok(factory.into())

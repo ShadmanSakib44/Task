@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import './App.css'
 
 function App() {
   const [text, setText] = useState('')
   const [selection, setSelection] = useState<[number, number] | null>(null)
+  const editorRef = useRef<HTMLTextAreaElement>(null)
 
   const isMobile = useMediaQuery({ maxWidth: 767 })
 
   const handleTextSelect = () => {
-    const textarea = document.getElementById('text-editor') as HTMLTextAreaElement
+    const textarea = editorRef.current!
     const start = textarea.selectionStart
     const end = textarea.selectionEnd
     setSelection(start !== end ? [start, end] : null)
@@ -30,10 +31,8 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: selectedText }),
       })
-
       const data = await res.json()
       const paraphrased = data.result || 'Could not paraphrase.'
-
       const newText = text.slice(0, start) + paraphrased + text.slice(end)
       setText(newText)
       setSelection(null)
@@ -50,11 +49,12 @@ function App() {
 
       <textarea
         id="text-editor"
+        ref={editorRef}
         className="editor"
         value={text}
-        onChange={(e) => setText(e.target.value)}
-        onMouseUp={handleTextSelect}
-        onKeyUp={handleTextSelect}
+        onChange={e => setText(e.target.value)}
+        onSelect={handleTextSelect}     // ← fire on any selection change
+        onTouchEnd={handleTextSelect}   // ← catch finger‐driven selection
         placeholder="Start typing or paste your text here..."
       />
 
@@ -66,7 +66,6 @@ function App() {
         {isMobile ? 'Paraphrase' : 'Paraphrase Selected Text'}
       </button>
 
-      {/* Footer */}
       <footer className="footer">
         Built by <a href="https://sakibshadman.com" target="_blank" rel="noopener noreferrer">sakibshadman.com</a>
       </footer>
