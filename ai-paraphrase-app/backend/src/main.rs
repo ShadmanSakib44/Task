@@ -87,6 +87,7 @@ async fn main(
     let factory = move |cfg: &mut web::ServiceConfig| {
         let cors = Cors::default()
             .allowed_origin("https://task-hye8.vercel.app")
+            .allowed_origin("http://localhost:5173")
             .allowed_methods(vec!["GET", "POST", "OPTIONS"])
             .allowed_headers(vec![
                 header::CONTENT_TYPE,
