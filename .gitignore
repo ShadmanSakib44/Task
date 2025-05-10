@@ -1,2 +1,6 @@
 .env*
 Secrets*.toml
+
+.env
+ai-paraphrase-app/backend/.env
+ai-paraphrase-app/frontend/.env
